@@ -39,7 +39,7 @@ const MapaTab: React.FC<MapaTabProps> = ({ locations }) => {
 
     return (
         <div className="flex flex-col overflow-hidden">
-            <h2 className="text-3xl md:text-4xl font-semibold text-center text-white capitalize bg-secondary p-5">we cover the entire {locationName}</h2>
+            <h2 className="text-3xl md:text-4xl font-semibold text-center text-white capitalize bg-secondary p-5">we cover the entire City Of {locationName}</h2>
             <div className="w-full h-[500px] md:h-[650px] relative ">
                 <iframe
                     src={locations[selectedTab].urlCity}
