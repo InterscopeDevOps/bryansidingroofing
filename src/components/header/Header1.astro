@@ -1,0 +1,125 @@
+---
+import type { ApiData } from "../../interfaces/dbData";
+import { MenuHeader } from "./MenuHeader";
+import { RedesIcons } from "../RedesIcons";
+
+let UrlApi = import.meta.env.API_URL;
+let KetApi = import.meta.env.API_KEY;
+// Realiza la llamada a la API
+const response = await fetch(`${UrlApi}/${KetApi}`);
+const data: ApiData = await response.json();
+
+const onePages = data.widgets.onePages;
+
+let open = false;
+---
+
+<style>
+  .paralelografo {
+    clip-path: polygon(9% 0, 100% 0, 100% 100%, 0% 100%);
+  }
+
+  .paralelografo-inverso {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 10% 100%);
+  }
+
+  @media screen and (max-width: 768px) {
+    .paralelografo {
+      clip-path: polygon(0% 0, 100% 0, 100% 100%, 0% 100%);
+    }
+
+    .paralelografo-inverso {
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+    }
+  }
+</style>
+
+<header
+  class={` bg-white w-full min-h-[200px] max-h-[250px] flex justify-start items-center relative borderBottomSecondaryColor`}
+  transition:animate="none"
+>
+  <section class="w-[90%] h-full flex justify-between items-center p-10">
+    <div class="w-full md:w-[50%] h-[220px] lg:w-[45%]">
+      <picture class="w-full h-full aspect-auto">
+        <img
+          src={data?.logos.primary}
+          alt={`logo ${data?.name}`}
+          loading="eager"
+          class="w-full h-full object-contain"
+          width="300"
+          height="200"
+        />
+      </picture>
+    </div>
+    <nav class="w-[20%] md:w-[80%] flex justify-end">
+      {
+        onePages ? (
+          <div class="relative block" />
+        ) : (
+          <div class="relative block z-10">
+            <MenuHeader client:load data={data} />
+          </div>
+        )
+      }
+    </nav>
+  </section>
+
+  <section
+    class="absolute w-full md:pl-14 flex items-center justify-end pr-5 md:w-[70%] min-h-[40px] h-auto p-1 text-white paralelografo-inverso bg-primary top-0 z-[8] right-0"
+  >
+    {
+      data.dataGeneral.openingHours.slice(0, 2).map((hour) => (
+        <li class="py-2 items-center justify-center border-r-2 hidden lg:flex">
+          <div class="flex">
+            <div class="flex items-center pr-5">
+              <i class="fa-solid fa-calendars text-[20px]" />
+              <span class="pl-3">{hour.days}</span>
+            </div>
+            <div class="flex items-center pr-5">
+              <i class="fa-solid fa-clock-nine text-[20px]" />{" "}
+              <span class="pl-3 ">{hour.hours}</span>
+            </div>
+          </div>
+        </li>
+      ))
+    }
+
+    <span class="mx-5 font-medium">Follow Us On:</span>
+    <div>
+      <RedesIcons textColor="text-white" redesSociales={data?.redesSociales} />
+    </div>
+  </section>
+
+  <section
+    class="absolute flex md:justify-start justify-center w-full md:w-[70%] h-[80px] paralelografo bg-primary -bottom-10 z-[8] right-0"
+  >
+    <section class="flex gap-5 pl-5 md:pl-28 text-white">
+      {
+        data?.dataGeneral?.phones.slice(0, 2).map((phone) => (
+          <div class="flex items-center">
+            <a href={`tel:+1${phone.number}`} class="py-2 flex items-center">
+              <i class="fa-solid fa-phone text-[30px]" />
+              <div class="flex flex-col">
+                <span class="pl-3 font-extrabold">Call Us</span>
+                <span class="pl-3">{phone.number}</span>
+              </div>
+            </a>
+          </div>
+        ))
+      }
+      {
+        data.dataGeneral.emails.map((mail) => (
+          <div class="lg:flex hidden items-center ">
+            <a href={`mailto:${mail.email}`} class="py-2 flex items-center">
+              <i class="fa-solid fa-envelope text-[30px]" />
+              <div class="flex flex-col">
+                <span class="pl-3 font-extrabold">Mail Us</span>
+                <span class="pl-3">{mail.email}</span>
+              </div>
+            </a>
+          </div>
+        ))
+      }
+    </section>
+  </section>
+</header>

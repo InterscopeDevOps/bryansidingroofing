@@ -1,0 +1,107 @@
+---
+import type { ApiData } from "../../interfaces/dbData";
+import { MenuHeader } from "./MenuHeader";
+import { RedesIcons } from "../RedesIcons";
+import ButtonContent from "../button/ButtonContent";
+import ButtonContent_2 from "../button/ButtonContent_2";
+
+let UrlApi = import.meta.env.API_URL;
+let KetApi = import.meta.env.API_KEY;
+// Realiza la llamada a la API
+const response = await fetch(`${UrlApi}/${KetApi}`);
+const data: ApiData = await response.json();
+
+const onePages = data.widgets.onePages;
+
+let open = false;
+---
+
+<header class="z-[10] w-full">
+  <div class="flex ">
+    <div class="w-full flex md:w-[40%] lg:w-[25%] items-center bg-primary py-2">
+      <picture>
+        <img
+          src="https://firebasestorage.googleapis.com/v0/b/imagenes-de-stock-y-redes.appspot.com/o/logos%2FMBP-CONSTRUCTION-LLC.gif?alt=media&token=08972b38-e977-4f3f-b4f4-b1c11e478081"
+          alt={`logo ${data?.name}`}
+          loading="eager"
+          class="w-[80%] mx-auto"
+          width="300"
+          height="200"
+        />
+      </picture>
+
+      <nav class="w-[20%] justify-center pr-5 md:hidden block text-white">
+        <MenuHeader client:load data={data} />
+      </nav>
+    </div>
+
+    <div
+      class="hidden md:flex w-[65%] lg:w-[72%] mx-auto justify-center items-center bg-secondary"
+    >
+      <div class="flex space-x-3 w-full mx-auto justify-center">
+        {
+          data.dataGeneral.phones.slice(0, 2)?.map((item) => (
+            <div class="hidden w-[33%] text-white border-r-[2px] border-dotted border-white lg:flex mx-auto justify-center">
+              <div class="w-[15%] self-center mr-3">
+                <i class="fa-solid fa-phone text-[35px]" />
+              </div>
+              <div>
+                <a href={`tel:+1${item.number}`}>
+                  <p class="mb-0">
+                    {item?.title?.length > 0 ? item?.title : "Phone Number"}
+                  </p>
+                  <h5 class="text-[21px]">{item.number}</h5>
+                </a>
+              </div>
+            </div>
+          ))
+        }
+
+        <div
+          class="hidden w-[30%] text-white border-r-[2px] border-dotted border-white bp lg:flex mx-auto justify-center"
+        >
+          <div class="w-[15%] self-center mr-3">
+            <i class="fa-solid fa-calendars text-[35px]"></i>
+          </div>
+          <div>
+            <p class="mb-0">Workdays</p>
+            <h5 class="text-[21px]">
+              {data.dataGeneral.openingHours[0].days}
+            </h5>
+          </div>
+        </div>
+        <div class="hidden w-[40%] text-white lg:flex mx-auto justify-center">
+          <div class="w-[15%] self-center mr-3">
+            <i class="fa-solid fa-clock-nine text-[35px]"></i>
+          </div>
+          <div>
+            <p class="mb-0">Work Hours</p>
+            <h5 class="text-[21px]">
+              {data.dataGeneral.openingHours[0].hours}
+            </h5>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="hidden bg-primary md:flex w-[35%] lg:w-[18%] mx-auto justify-center items-center bg-center bg-contain bg-no-repeat"
+    >
+      <a href={`/${"contact"}`}>
+        <span class="capitalize text-white text-[20px] font-semibold">
+          {"FREE ESTIMATE"}
+        </span>
+      </a>
+    </div>
+  </div>
+
+  <div class="bg-white px-3 py-4 drop-shadow-[0_5px_5px_rgba(000,001,000,0.5)]">
+    <div class="flex justify-center items-center">
+      <nav class="hidden md:block">
+        <MenuHeader client:load data={data} />
+      </nav>
+      <div class="block md:hidden">
+        <ButtonContent_2 />
+      </div>
+    </div>
+  </div>
+</header>

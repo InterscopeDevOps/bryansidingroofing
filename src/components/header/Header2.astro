@@ -1,0 +1,156 @@
+---
+import type { ApiData } from "../../interfaces/dbData";
+import { MenuHeader } from "./MenuHeader";
+import { RedesIcons } from "../RedesIcons";
+import ButtonContent_2 from "../button/ButtonContent_2";
+
+let UrlApi = import.meta.env.API_URL;
+let KetApi = import.meta.env.API_KEY;
+// Realiza la llamada a la API
+const response = await fetch(`${UrlApi}/${KetApi}`);
+const data: ApiData = await response.json();
+
+const onePages = data.widgets.onePages;
+
+let open = false;
+---
+
+<header class="relative z-[8] w-full md:py-0 py-2">
+  <div class="bg-black p-2 text-white lg:block hidden">
+    <div class="md:w-4/5 mx-auto md:flex justify-end items-center gap-3">
+      <p>Follow Us:</p>
+      <ul class="flex gap-4">
+        <RedesIcons
+          textColor="text-white"
+          redesSociales={data?.redesSociales}
+        />
+      </ul>
+    </div>
+  </div>
+  <div
+    class="md:w-4/5 w-full mx-auto flex md:flex-row flex-col pt-5 md:pb-0 pb-5 md:py-0"
+  >
+    <div class="w-full md:w-[40%] flex">
+      <div class="md:w-full w-[80%]">
+        <picture>
+          <img
+            src={data?.logos.primary}
+            alt={`logo ${data?.name}`}
+            loading="eager"
+            class="md:w-[300px] w-[100%] md:h-[180px] pl-3 md:pl-0 object-contain relative"
+            width="300"
+            height="200"
+          />
+        </picture>
+      </div>
+
+      <div class="flex self-center md:hidden w-[30%] justify-center">
+        <MenuHeader client:load data={data} />
+      </div>
+    </div>
+    <div
+      class="w-full md:w-[80%] hidden md:flex md:flex-row flex-col self-center items-center justify-between"
+    >
+      <div class="flex gap-5">
+        {
+          data?.dataGeneral?.phones.slice(0, 2).map((phone) => (
+            <ul class="hidden lg:block">
+              <li class="md:py-2 py-4">
+                <a
+                  href={`tel:+1${phone.number}`}
+                  class="md:mx-6 mx-2 flex items-center"
+                >
+                  <i class="fa-solid fa-phone md:text-[25px] text-[20px] mx-1" />
+                  <span class="flex flex-col md:pt-[10px]">
+                    <span class="md:pl-3 font-bold md:text-[18px] text-[14px]">
+                      {phone.number}
+                    </span>
+                    <span class="md:pl-3 mt-[-5px]">Phone</span>
+                  </span>
+                </a>
+              </li>
+            </ul>
+          ))
+        }
+
+        <ul class="flex">
+          {
+            data.dataGeneral.openingHours.slice(0, 1).map((hour) => (
+              <li class="py-2 items-center justify-center  hidden lg:flex ">
+                <div class="fle flex-col space-y-4">
+                  <div class="flex items-center pr-5">
+                    <i class="fa-solid fa-calendars text-[20px]" />
+                    <span class="pl-3">{hour.days}</span>
+                  </div>
+                  <div class="flex items-center pr-5">
+                    <i class="fa-solid fa-clock-nine text-[20px]" />{" "}
+                    <span class="pl-3 ">{hour.hours}</span>
+                  </div>
+                </div>
+              </li>
+            ))
+          }
+          {
+            data.dataGeneral.openingHours.slice(1).map((hour) => (
+              <li class="py-2 items-center justify-center  hidden lg:flex">
+                <div class="flex flex-col space-y-4">
+                  <div class="flex items-center pr-5">
+                    <i class="fa-solid fa-calendars text-[20px]" />
+                    <span class="pl-3">{hour.days}</span>
+                  </div>
+                  <div class="flex items-center pr-5">
+                    <i class="fa-solid fa-clock-nine text-[20px]" />{" "}
+                    <span class="pl-3 ">{hour.hours}</span>
+                  </div>
+                </div>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+      <div class="md:block hidden">
+        <ButtonContent_2 />
+      </div>
+    </div>
+  </div>
+
+  {/* modo mobil barra*/}
+  <div
+    class="md:hidden shadow-2xl w-[90%] absolute -bottom-6 left-0 right-0 mx-auto bg-white flex justify-between items-center rounded-lg z-[8]"
+  >
+    <ul class="flex gap-4 ml-5">
+      <RedesIcons textColor="text-black" redesSociales={data?.redesSociales} />
+    </ul>
+    <div class="ml-4">
+      <a href={`tel:+1${data?.dataGeneral.phones[0].number}`}>
+        <i
+          class="fa-solid fa-phone bg-fourth text-white p-4 text-[35px] rounded-r-lg"
+        ></i>
+      </a>
+    </div>
+  </div>
+
+  <!-- modo desktop barra -->
+
+  <div class="md:block hidden">
+    <nav
+      class="w-4/5 mx-auto flex flex-wrap items-center justify-between shadow-2xl rounded-lg relative bg-primary md:mb-[-20px]"
+    >
+      <div class="text-center flex justify-center"></div>
+      <div
+        class="w-full md:flex md:items-center md:justify-between justify-center md:bg-transparent bg-white hidden text-white color-2 pl-5"
+        id="menu"
+      >
+        <MenuHeader client:load data={data} />
+
+        <div class="ml-4">
+          <a href={`tel:+1${data?.dataGeneral.phones[0].number}`}>
+            <i
+              class="fa-solid fa-phone bg-fourth text-white p-4 text-[40px] rounded-r-lg"
+            ></i>
+          </a>
+        </div>
+      </div>
+    </nav>
+  </div>
+</header>
