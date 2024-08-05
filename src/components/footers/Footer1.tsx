@@ -69,13 +69,13 @@ const Footer1: React.FC<Footer1Props> = ({ dataGlobal }) => {
                     <div className="w-full h-full flex flex-col md:flex-col gap-5">
                         <div className="w-full flex flex-col">
                             <div className="flex md:flex-row flex-col w-full justify-center items-center">
-                                <picture className="md:w-[35%] w-[92%] h-full" >
+                                <picture className="md:w-[35%] w-[92%] h-full p-5" >
                                     <img
                                         src={dataGlobal.logos.primary}
                                         alt="logo"
                                         loading="lazy"
-                                        width={200}
-                                        height={200}
+                                        width={300}
+                                        height={300}
                                     />
                                 </picture>
 

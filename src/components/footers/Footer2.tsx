@@ -68,10 +68,10 @@ const Footer2: React.FC<Footer1Props> = ({ dataGlobal }) => {
                     <div className="md:w-[30%] w-1/2 bg-primary h-full place-content-center place-items-start absolute left-0 z-10" style={{
                         clipPath: 'polygon(0 100%, 100% 100%, 75% 50%, 100% 0, 0 0)' // Agrega este estilo
                     }} >
-                        <picture className="md:w-[35%] w-[92%] h-full ">
+                        <picture className="md:w-[60%] w-[100%] h-full ">
                             <img
                                 src={dataGlobal.logos.primary}
-                                className="w-11/12 md:w-[70%] mx-auto md:mx-0"
+                                className="w-11/12 md:w-[60%] mx-auto md:mx-0"
                                 alt="logo"
                                 loading="lazy"
                                 width={200}
